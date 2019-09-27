@@ -5,7 +5,7 @@ from tqdm import tqdm
 from tensorflow.contrib import layers
 from FLAGS import *
 
-print("applyHDML:()".format(FLAGS.Apply_HDML))
+print("applyHDML:{}".format(FLAGS.Apply_HDML))
 FLAGS.Apply_HDML = False
 if FLAGS.Apply_HDML:
 	print("HDML is true")
@@ -216,7 +216,7 @@ def main(_):
                     # nmi_tr, f1_tr, recalls_tr = evaluation.Evaluation(
                     #     stream_train_eval, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, 98, neighbours)
                     nmi_te, f1_te, recalls_te = evaluation.Evaluation(
-                        stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, 98, neighbours)
+                        stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
 
                     # Summary
                     eval_summary = tf.Summary()

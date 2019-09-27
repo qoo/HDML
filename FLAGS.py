@@ -41,6 +41,8 @@ tf.flags.DEFINE_float('lr_gen', 1e-2, '1e-2 for others')
 tf.flags.DEFINE_float('alpha', 90, 'The factor in the pulling function')
 tf.flags.DEFINE_integer('num_class', 99, 'Number of classes in dataset, 99 for cars, 101 for cub,'
                         '11319 for products')
+tf.flags.DEFINE_integer('num_class_test', 98, 'Number of classes in dataset, 99 for cars, 101 for cub,'
+                        '11319 for products')
 tf.flags.DEFINE_float('_lambda', 0.5, 'The trade_off between the two part of gen_loss, 0.5 for cars196')
 tf.flags.DEFINE_float('s_lr', 1e-3, 'The learning rate of softmax trainer, 1e-3 for cars196')
 
