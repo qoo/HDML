@@ -168,14 +168,14 @@ def main(_):
         # epoch_iterator = stream_train.get_epoch_iterator()
 
         # collectors
-        # J_m_loss = nn_Ops.data_collector(tag='Jm', init=1e+6)
-        # J_syn_loss = nn_Ops.data_collector(tag='J_syn', init=1e+6)
-        # J_metric_loss = nn_Ops.data_collector(tag='J_metric', init=1e+6)
-        # J_soft_loss = nn_Ops.data_collector(tag='J_soft', init=1e+6)
-        # J_recon_loss = nn_Ops.data_collector(tag='J_recon', init=1e+6)
-        # J_gen_loss = nn_Ops.data_collector(tag='J_gen', init=1e+6)
-        # cross_entropy_loss = nn_Ops.data_collector(tag='cross_entropy', init=1e+6)
-        # wd_Loss = nn_Ops.data_collector(tag='weight_decay', init=1e+6)
+        J_m_loss = nn_Ops.data_collector(tag='Jm', init=1e+6)
+        J_syn_loss = nn_Ops.data_collector(tag='J_syn', init=1e+6)
+        J_metric_loss = nn_Ops.data_collector(tag='J_metric', init=1e+6)
+        J_soft_loss = nn_Ops.data_collector(tag='J_soft', init=1e+6)
+        J_recon_loss = nn_Ops.data_collector(tag='J_recon', init=1e+6)
+        J_gen_loss = nn_Ops.data_collector(tag='J_gen', init=1e+6)
+        cross_entropy_loss = nn_Ops.data_collector(tag='cross_entropy', init=1e+6)
+        wd_Loss = nn_Ops.data_collector(tag='weight_decay', init=1e+6)
         # max_nmi = 0
         # step = 0
         #
