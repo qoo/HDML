@@ -223,6 +223,14 @@ def main(_):
 
 
 
+def save_1Darray(data, filename):
+    filename = os.path.expanduser(filename)
+    with open(filename, 'w') as f:
+        for data_idx, item in enumerate(data):
+            if data_idx + 1 != len(data):
+                f.write("%s\n" % str(item))
+            else:
+                f.write("%s" % str(item))
 
 if __name__ == '__main__':
     tf.app.run()
