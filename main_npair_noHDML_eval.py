@@ -187,7 +187,7 @@ def main(_):
         # nmi_te, f1_te, recalls_te = evaluation.Evaluation(
         #     stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
         embeddings, labels = evaluation.Evaluation_icon(
-            stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
+            stream_train, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
         out_dir = os.path.expanduser('/root/icon_out')
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
