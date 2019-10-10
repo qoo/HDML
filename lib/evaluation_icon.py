@@ -251,7 +251,7 @@ def Evaluation_icon2(Evaluation_icon2, image_mean, sess, x_raw, label_raw, is_Tr
     images_, labels_ = Evaluation_icon2
     images = images_[0]
     labels = labels_[0]
-    for idx in range(tqdm(len(labels))):
+    for idx in range(len(labels)):
         image = images[idx]
         x_batch_data, c_batch_data = np.array([image]), labels[idx]
         x_batch_data = np.transpose(x_batch_data[:, [2,1,0], :, :], (0, 2, 3, 1))
