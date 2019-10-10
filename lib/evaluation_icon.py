@@ -245,6 +245,28 @@ def Evaluation_icon(stream_test, image_mean, sess, x_raw, label_raw, is_Training
     # print(f1)
     return y_data, c_data
 
+def Evaluation_icon2(Evaluation_icon2, image_mean, sess, x_raw, label_raw, is_Training, embedding, num_class, neighb):
+    y_batches = []
+    c_batches = []
+    images, labels = Evaluation_icon2
+    for idx, image in enumerate(tqdm(images)):
+    
+        x_batch_data, c_batch_data = image, labels[idx]
+        x_batch_data = np.transpose(x_batch_data[:, [2,1,0], :, :], (0, 2, 3, 1))
+        x_batch_data = x_batch_data-image_mean
+        y_batch = sess.run([tf.nn.l2_normalize(embedding, dim=1)],
+                           feed_dict={x_raw: x_batch_data, label_raw: c_batch_data, is_Training: False})
+        y_batch_data = y_batch[0]
+        y_batches.append(y_batch_data)
+        c_batches.append(c_batch_data)
+    y_data = np.concatenate(y_batches)
+    c_data = np.concatenate(c_batches)
+    # n_clusters = num_class
+    # nmi, f1 = evaluate_cluster(y_data, c_data, n_clusters)
+    # recalls = evaluate_recall(y_data, c_data, neighbours=neighb)
+    # print(nmi)
+    # print(f1)
+    return y_data, c_data
 
 def products_Evaluation(stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding, num_class, neighb):
     y_batches = []

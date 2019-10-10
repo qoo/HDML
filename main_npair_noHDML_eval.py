@@ -1,4 +1,4 @@
-from datasets import data_provider
+from datasets import data_provider_icon as data_provider
 from lib import GoogleNet_Model, Loss_ops, nn_Ops, Embedding_Visualization, HDML
 from lib import evaluation_icon as evaluation
 import copy
@@ -13,8 +13,9 @@ if FLAGS.Apply_HDML:
 else:
 	print("HDML is false")
 # Create the stream of datas from dataset
-streams = data_provider.get_streams(FLAGS.batch_size, FLAGS.dataSet, method, crop_size=FLAGS.default_image_size)
-stream_train, stream_train_eval, stream_test = streams
+# streams = data_provider.get_streams(FLAGS.batch_size, FLAGS.dataSet, method, crop_size=FLAGS.default_image_size)
+# stream_train, stream_train_eval, stream_test = streams
+stream_train = data_provider.get_streams(FLAGS.batch_size, FLAGS.dataSet, method, crop_size=FLAGS.default_image_size)
 
 regularizer = layers.l2_regularizer(FLAGS.Regular_factor)
 # create a saver
@@ -186,7 +187,7 @@ def main(_):
         #     stream_train_eval, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, 98, neighbours)
         # nmi_te, f1_te, recalls_te = evaluation.Evaluation(
         #     stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
-        embeddings, labels = evaluation.Evaluation_icon(
+        embeddings, labels = evaluation.Evaluation_icon2(
             stream_train, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
         out_dir = os.path.expanduser('/root/icon_out')
         if not os.path.exists(out_dir):
