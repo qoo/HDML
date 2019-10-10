@@ -1,6 +1,6 @@
 from datasets import data_provider
 from lib import GoogleNet_Model, Loss_ops, nn_Ops, Embedding_Visualization, HDML
-from lib import evaluation_icon as evaludation
+from lib import evaluation_icon as evaluation
 import copy
 from tqdm import tqdm
 from tensorflow.contrib import layers
