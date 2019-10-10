@@ -1,5 +1,6 @@
 from datasets import data_provider
-from lib import GoogleNet_Model, Loss_ops, nn_Ops, Embedding_Visualization, HDML, evaluation
+from lib import GoogleNet_Model, Loss_ops, nn_Ops, Embedding_Visualization, HDML
+from lib import evaluation_icon as evaludation
 import copy
 from tqdm import tqdm
 from tensorflow.contrib import layers
@@ -164,53 +165,60 @@ def main(_):
             saver.restore(sess, FLAGS.log_save_path+FLAGS.dataSet+'/'+FLAGS.LossType+'/'+FLAGS.formerTimer)
         
         # Training
-        epoch_iterator = stream_train.get_epoch_iterator()
+        # epoch_iterator = stream_train.get_epoch_iterator()
 
         # collectors
-        J_m_loss = nn_Ops.data_collector(tag='Jm', init=1e+6)
-        J_syn_loss = nn_Ops.data_collector(tag='J_syn', init=1e+6)
-        J_metric_loss = nn_Ops.data_collector(tag='J_metric', init=1e+6)
-        J_soft_loss = nn_Ops.data_collector(tag='J_soft', init=1e+6)
-        J_recon_loss = nn_Ops.data_collector(tag='J_recon', init=1e+6)
-        J_gen_loss = nn_Ops.data_collector(tag='J_gen', init=1e+6)
-        cross_entropy_loss = nn_Ops.data_collector(tag='cross_entropy', init=1e+6)
-        wd_Loss = nn_Ops.data_collector(tag='weight_decay', init=1e+6)
-        max_nmi = 0
-        step = 0
-
-        bp_epoch = FLAGS.init_batch_per_epoch
+        # J_m_loss = nn_Ops.data_collector(tag='Jm', init=1e+6)
+        # J_syn_loss = nn_Ops.data_collector(tag='J_syn', init=1e+6)
+        # J_metric_loss = nn_Ops.data_collector(tag='J_metric', init=1e+6)
+        # J_soft_loss = nn_Ops.data_collector(tag='J_soft', init=1e+6)
+        # J_recon_loss = nn_Ops.data_collector(tag='J_recon', init=1e+6)
+        # J_gen_loss = nn_Ops.data_collector(tag='J_gen', init=1e+6)
+        # cross_entropy_loss = nn_Ops.data_collector(tag='cross_entropy', init=1e+6)
+        # wd_Loss = nn_Ops.data_collector(tag='weight_decay', init=1e+6)
+        # max_nmi = 0
+        # step = 0
+        #
+        # bp_epoch = FLAGS.init_batch_per_epoch
         # evaluation
         print('only eval!')
         # nmi_tr, f1_tr, recalls_tr = evaluation.Evaluation(
         #     stream_train_eval, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, 98, neighbours)
-        nmi_te, f1_te, recalls_te = evaluation.Evaluation(
+        # nmi_te, f1_te, recalls_te = evaluation.Evaluation(
+        #     stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
+        embeddings, labels = evaluation.Evaluation_icon(
             stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
-
-        # Summary
-        eval_summary = tf.Summary()
-        # eval_summary.value.add(tag='train nmi', simple_value=nmi_tr)
-        # eval_summary.value.add(tag='train f1', simple_value=f1_tr)
+        out_dir = os.path.expanduser('/root/icon_out')
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
+        for idx, distance in enumerate(embeddings):
+            save_1Darray(distance, os.path.expanduser(os.path.join(out_dir, str(idx))))
+        print('End')
+        # # Summary
+        # eval_summary = tf.Summary()
+        # # eval_summary.value.add(tag='train nmi', simple_value=nmi_tr)
+        # # eval_summary.value.add(tag='train f1', simple_value=f1_tr)
+        # # for i in range(0, np.shape(neighbours)[0]):
+        # #     eval_summary.value.add(tag='Recall@%d train' % neighbours[i], simple_value=recalls_tr[i])
+        # eval_summary.value.add(tag='test nmi', simple_value=nmi_te)
+        # eval_summary.value.add(tag='test f1', simple_value=f1_te)
         # for i in range(0, np.shape(neighbours)[0]):
-        #     eval_summary.value.add(tag='Recall@%d train' % neighbours[i], simple_value=recalls_tr[i])
-        eval_summary.value.add(tag='test nmi', simple_value=nmi_te)
-        eval_summary.value.add(tag='test f1', simple_value=f1_te)
-        for i in range(0, np.shape(neighbours)[0]):
-            eval_summary.value.add(tag='Recall@%d test' % neighbours[i], simple_value=recalls_te[i])
-        J_m_loss.write_to_tfboard(eval_summary)
-        wd_Loss.write_to_tfboard(eval_summary)
-        eval_summary.value.add(tag='learning_rate', simple_value=_lr)
-        summary_writer.add_summary(eval_summary, step)
-        print('Summary written')
-        if nmi_te > max_nmi:
-            max_nmi = nmi_te
-            print("Saved")
-            saver.save(sess, os.path.join(LOGDIR, "model.ckpt"))
-        summary_writer.flush()
-        if step in [5632, 6848]:
-            _lr = _lr * 0.5
-
-        if step >= 5000:
-            bp_epoch = FLAGS.batch_per_epoch
+        #     eval_summary.value.add(tag='Recall@%d test' % neighbours[i], simple_value=recalls_te[i])
+        # J_m_loss.write_to_tfboard(eval_summary)
+        # wd_Loss.write_to_tfboard(eval_summary)
+        # eval_summary.value.add(tag='learning_rate', simple_value=_lr)
+        # summary_writer.add_summary(eval_summary, step)
+        # print('Summary written')
+        # if nmi_te > max_nmi:
+        #     max_nmi = nmi_te
+        #     print("Saved")
+        #     saver.save(sess, os.path.join(LOGDIR, "model.ckpt"))
+        # summary_writer.flush()
+        # if step in [5632, 6848]:
+        #     _lr = _lr * 0.5
+        #
+        # if step >= 5000:
+        #     bp_epoch = FLAGS.batch_per_epoch
 
 
 
