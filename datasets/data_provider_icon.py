@@ -41,7 +41,7 @@ def get_streams(batch_size=50, dataset='cars196', method='n_pairs_mc',
             "`dataset` must be 'cars196', 'cub200_2011' or 'products'.")
 
     dataset_train = dataset_class(['train'], load_in_memory=load_in_memory)
-    dataset_test = dataset_class(['test'], load_in_memory=load_in_memory)
+    # dataset_test = dataset_class(['test'], load_in_memory=load_in_memory)
 
     if not isinstance(crop_size, tuple):
         crop_size = (crop_size, crop_size)
