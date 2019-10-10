@@ -254,6 +254,7 @@ def Evaluation_icon2(Evaluation_icon2, image_mean, sess, x_raw, label_raw, is_Tr
     for idx in range(len(labels)):
         image = images[idx]
         x_batch_data, c_batch_data = np.array([image]), labels[idx]
+        print(x_batch_data.shape)
         x_batch_data = np.transpose(x_batch_data[:, [2,1,0], :, :], (0, 2, 3, 1))
         x_batch_data = x_batch_data-image_mean
         y_batch = sess.run([tf.nn.l2_normalize(embedding, dim=1)],
