@@ -219,6 +219,13 @@ def main(_):
                     #     stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
                     y_batches = []
                     c_batches = []
+                    print("print train batch")
+                    for batch in copy.copy(epoch_iterator):
+                        x_batch_data, c_batch_data = batch
+                        print(x_batch_data.shape)
+                        print(x_batch_data[0])
+                        print(c_batch_data[0])
+                        break
                     print("evaluation")
                     for batch in tqdm(copy.copy(stream_test.get_epoch_iterator())):
                         x_batch_data, c_batch_data = batch
