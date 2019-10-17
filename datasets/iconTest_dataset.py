@@ -23,7 +23,7 @@ class IconTestDataset(H5PYDataset):
             msg = str(e) + (""".
          You need to download the dataset and convert it to hdf5 before.""")
             raise IOError(msg)
-        super(Cars196Dataset, self).__init__(
+        super(IconTestDataset, self).__init__(
             file_or_path=path, which_sets=which_sets, **kwargs)
 
 
