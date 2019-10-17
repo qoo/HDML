@@ -16,7 +16,7 @@ streams = data_provider.get_streams(FLAGS.batch_size, FLAGS.dataSet, method, cro
 stream_train, stream_train_eval, stream_test = streams
 
 streams2 = data_provider.get_streams(FLAGS.batch_size, 'iconTest', method, crop_size=FLAGS.default_image_size)
-stream_train2, stream_train_eval2, stream_test2 = streams
+stream_train2, stream_train_eval2, stream_test2 = streams2
 
 regularizer = layers.l2_regularizer(FLAGS.Regular_factor)
 # create a saver
@@ -227,14 +227,14 @@ def main(_):
                         x_batch_data, c_batch_data = batch
                         print(x_batch_data.shape)
                         print(x_batch_data[0])
-                        print(c_batch_data[0])
+                        print(c_batch_data[0],c_batch_data[-1])
                         break
                     print("evaluation")
                     for batch in tqdm(copy.copy(stream_test2.get_epoch_iterator())):
                         x_batch_data, c_batch_data = batch
                         print(x_batch_data.shape)
                         print(x_batch_data[0])
-                        print(c_batch_data[0])
+                        print(c_batch_data[0],c_batch_data[-1])
 
 
                     # Summary
