@@ -208,6 +208,7 @@ def Evaluation(stream_test, image_mean, sess, x_raw, label_raw, is_Training, emb
     c_batches = []
     for batch in tqdm(copy.copy(stream_test.get_epoch_iterator())):
         x_batch_data, c_batch_data = batch
+        print(x_batch_data.shape)
         x_batch_data = np.transpose(x_batch_data[:, [2,1,0], :, :], (0, 2, 3, 1))
         x_batch_data = x_batch_data-image_mean
         y_batch = sess.run([tf.nn.l2_normalize(embedding, dim=1)],
