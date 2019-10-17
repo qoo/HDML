@@ -245,8 +245,8 @@ def main(_):
                         print("Saved")
                         saver.save(sess, os.path.join(LOGDIR, "model.ckpt"))
                     summary_writer.flush()
-                    if step in [5632, 6848]:
-                        _lr = _lr * 0.5
+                    # if step in [5632, 6848]:
+                    #     _lr = _lr * 0.5
 
                     if step >= 5000:
                         bp_epoch = FLAGS.batch_per_epoch
