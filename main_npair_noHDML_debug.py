@@ -230,7 +230,7 @@ def main(_):
                         print(c_batch_data[0],c_batch_data[-1])
                         break
                     print("evaluation")
-                    for batch in tqdm(copy.copy(stream_test2.get_epoch_iterator())):
+                    for batch in tqdm(copy.copy(stream_train2.get_epoch_iterator())):
                         x_batch_data, c_batch_data = batch
                         print(x_batch_data.shape)
                         print(x_batch_data[0])
