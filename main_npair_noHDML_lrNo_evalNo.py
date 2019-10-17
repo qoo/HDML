@@ -219,7 +219,7 @@ def main(_):
                     #     stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
                     #
                     # # Summary
-                    # eval_summary = tf.Summary()
+                    eval_summary = tf.Summary()
                     # # eval_summary.value.add(tag='train nmi', simple_value=nmi_tr)
                     # # eval_summary.value.add(tag='train f1', simple_value=f1_tr)
                     # # for i in range(0, np.shape(neighbours)[0]):
@@ -228,9 +228,9 @@ def main(_):
                     # eval_summary.value.add(tag='test f1', simple_value=f1_te)
                     # for i in range(0, np.shape(neighbours)[0]):
                     #     eval_summary.value.add(tag='Recall@%d test' % neighbours[i], simple_value=recalls_te[i])
-                    # J_m_loss.write_to_tfboard(eval_summary)
-                    # wd_Loss.write_to_tfboard(eval_summary)
-                    # eval_summary.value.add(tag='learning_rate', simple_value=_lr)
+                    J_m_loss.write_to_tfboard(eval_summary)
+                    wd_Loss.write_to_tfboard(eval_summary)
+                    eval_summary.value.add(tag='learning_rate', simple_value=_lr)
                     # if FLAGS.Apply_HDML:
                     #     J_syn_loss.write_to_tfboard(eval_summary)
                     #     J_metric_loss.write_to_tfboard(eval_summary)
@@ -238,13 +238,13 @@ def main(_):
                     #     J_recon_loss.write_to_tfboard(eval_summary)
                     #     J_gen_loss.write_to_tfboard(eval_summary)
                     #     cross_entropy_loss.write_to_tfboard(eval_summary)
-                    # summary_writer.add_summary(eval_summary, step)
-                    # print('Summary written')
+                    summary_writer.add_summary(eval_summary, step)
+                    print('Summary written')
                     # if nmi_te > max_nmi:
                     #     max_nmi = nmi_te
                     #     print("Saved")
                     #     saver.save(sess, os.path.join(LOGDIR, "model.ckpt"))
-                    # summary_writer.flush()
+                    summary_writer.flush()
                     # # if step in [5632, 6848]:
                     #     _lr = _lr * 0.5
                     print("Saved")
