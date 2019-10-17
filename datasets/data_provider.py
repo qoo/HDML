@@ -11,6 +11,7 @@ from cars196_dataset import Cars196Dataset
 from cub200_2011_dataset import Cub200_2011Dataset
 from online_products_dataset import OnlineProductsDataset
 from random_fixed_size_crop_mod import RandomFixedSizeCrop
+from iconTest_dataset import IconTestDataset
 
 import random
 
@@ -29,8 +30,9 @@ def get_streams(batch_size=50, dataset='cars196', method='n_pairs_mc',
         crop_size (int or tuple of ints):
             height and width of the cropped image.
     '''
-
-    if dataset == 'cars196':
+    if dataset == 'iconTest':
+        dataset_class = IconTestDataset
+    elif dataset == 'cars196':
         dataset_class = Cars196Dataset
     elif dataset == 'cub200_2011':
         dataset_class = Cub200_2011Dataset
