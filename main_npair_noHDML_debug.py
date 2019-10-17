@@ -223,6 +223,7 @@ def main(_):
                     for batch in tqdm(copy.copy(stream_test.get_epoch_iterator())):
                         x_batch_data, c_batch_data = batch
                         print(x_batch_data.shape)
+                        print(c_batch_data)
 
 
                     # Summary
