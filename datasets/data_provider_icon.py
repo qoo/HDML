@@ -11,6 +11,7 @@ from cars196_dataset import Cars196Dataset
 from cub200_2011_dataset import Cub200_2011Dataset
 from online_products_dataset import OnlineProductsDataset
 from random_fixed_size_crop_mod import RandomFixedSizeCrop
+from iconEvalv2_dataset import IconEvalv2Dataset
 
 import random
 
@@ -31,7 +32,9 @@ def get_streams(batch_size=50, dataset='cars196', method='n_pairs_mc',
     '''
 
     if dataset == 'cars196':
-        dataset_class = Cars196Dataset
+        # dataset_class = Cars196Dataset
+        dataset_class = Cars196DatIconEvalv2Datasetaset
+
     elif dataset == 'cub200_2011':
         dataset_class = Cub200_2011Dataset
     elif dataset == 'products':
