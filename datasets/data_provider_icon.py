@@ -33,7 +33,7 @@ def get_streams(batch_size=50, dataset='cars196', method='n_pairs_mc',
 
     if dataset == 'cars196':
         # dataset_class = Cars196Dataset
-        dataset_class = Cars196DatIconEvalv2Datasetaset
+        dataset_class = IconEvalv2Dataset
 
     elif dataset == 'cub200_2011':
         dataset_class = Cub200_2011Dataset
