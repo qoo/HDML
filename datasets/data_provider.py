@@ -86,6 +86,76 @@ def get_streams(batch_size=50, dataset='cars196', method='n_pairs_mc',
     return stream_train, stream_train_eval, stream_test
 
 
+def get_streams_noFlip(batch_size=50, dataset='cars196', method='n_pairs_mc',
+                crop_size=224, load_in_memory=False):
+    '''
+    args:
+        batch_size (int):
+            number of examples per batch
+        dataset (str):
+            specify the dataset from 'cars196', 'cub200_2011', 'products'.
+        method (str or fuel.schemes.IterationScheme):
+            batch construction method. Specify 'n_pairs_mc', 'clustering', or
+            a subclass of IterationScheme that has constructor such as
+            `__init__(self, batch_size, dataset_train)` .
+        crop_size (int or tuple of ints):
+            height and width of the cropped image.
+    '''
+    if dataset == 'iconTest':
+        dataset_class = IconTestDataset
+    elif dataset == 'cars196':
+        dataset_class = Cars196Dataset
+    elif dataset == 'cub200_2011':
+        dataset_class = Cub200_2011Dataset
+    elif dataset == 'products':
+        dataset_class = OnlineProductsDataset
+    else:
+        raise ValueError(
+            "`dataset` must be 'cars196', 'cub200_2011' or 'products'.")
+
+    dataset_train = dataset_class(['train'], load_in_memory=load_in_memory)
+    dataset_test = dataset_class(['test'], load_in_memory=load_in_memory)
+
+    if not isinstance(crop_size, tuple):
+        crop_size = (crop_size, crop_size)
+
+    if method == 'n_pairs_mc':
+        labels = dataset_class(
+            ['train'], sources=['targets'], load_in_memory=True).data_sources
+        scheme = NPairLossScheme(labels, batch_size)
+    elif method == 'clustering':
+        scheme = EpochwiseShuffledInfiniteScheme(
+            dataset_train.num_examples, batch_size)
+    elif method == 'pair':
+        labels = dataset_class(
+            ['train'], sources=['targets'], load_in_memory=True).data_sources
+        scheme = ContrastiveLossScheme(labels, batch_size)
+    elif method == 'triplet':
+        labels = dataset_class(
+            ['train'], sources=['targets'], load_in_memory=True).data_sources
+        scheme = TripletLossScheme(labels, batch_size)
+    elif issubclass(method, IterationScheme):
+        scheme = method(batch_size, dataset=dataset_train)
+    else:
+        raise ValueError("`method` must be 'n_pairs_mc' or 'clustering' "
+                         "or subclass of IterationScheme.")
+    stream = DataStream(dataset_train, iteration_scheme=scheme)
+    stream_train = RandomFixedSizeCrop(stream, which_sources=('images',),
+                                       random_lr_flip=False,
+                                       window_shape=crop_size)
+
+    stream_train_eval = RandomFixedSizeCrop(DataStream(
+        dataset_train, iteration_scheme=SequentialScheme(
+            dataset_train.num_examples, batch_size)),
+        which_sources=('images',), center_crop=True, window_shape=crop_size)
+    stream_test = RandomFixedSizeCrop(DataStream(
+        dataset_test, iteration_scheme=SequentialScheme(
+            dataset_test.num_examples, batch_size)),
+        which_sources=('images',), center_crop=True, window_shape=crop_size)
+
+    return stream_train, stream_train_eval, stream_test
+
+
 class NPairLossScheme(BatchSizeScheme):
     def __init__(self, labels, batch_size):
         self._labels = np.array(labels).flatten()
