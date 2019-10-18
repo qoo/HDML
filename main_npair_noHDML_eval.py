@@ -189,7 +189,7 @@ def main(_):
         #     stream_test, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
         embeddings, labels = evaluation.Evaluation_icon2(
             stream_train, image_mean, sess, x_raw, label_raw, is_Training, embedding_z, FLAGS.num_class_test, neighbours)
-        out_dir = os.path.expanduser('/root/icon_out')
+        out_dir = os.path.expanduser(FLAGS.log_save_path[0:len(FLAGS.log_save_path)-1]+'embeddings')
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         for idx, distance in enumerate(embeddings):
